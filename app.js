@@ -3,6 +3,14 @@ const app = express()
 const routes = require('./routes')
 const chalk = require('chalk')
 const nunjucks = require('nunjucks')
+const path = require('path')
+const bodyParser = require('body-parser')
+const socketio = require('socket.io')
+const server = app.listen(3000, () => {
+  console.log('listening on port 3000')
+})
+
+const io = socketio.listen(server)
 
 app.set('view engine', 'html')
 //app.engine('html', nunjucks.render)
@@ -19,14 +27,12 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use(express.static('./public'))
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
 
-app.use('/', routes)
+// parse application/json
+app.use(bodyParser.json())
 
-// app.get('/', (req, res) => {
-//   res.render('index', { title: 'Twitter-JS', people: [{name: 'Gandalf'}, {name: 'Hermione'}, {name: 'Frodo'}]})
-// })
+app.use(express.static(path.join(__dirname, '/public')))
 
-app.listen(3000, () => {
-  console.log('listening on port 3000')
-})
+app.use('/', routes(io))

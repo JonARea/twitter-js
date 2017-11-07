@@ -58,3 +58,11 @@ code {
  font-weight: bold;
 }
 
+.tweets ul {
+  list-style: none;
+}
+.tweet-name > a {
+  color: black;
+  font-weight: 300;
+}
+

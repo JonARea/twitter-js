@@ -1,9 +1,11 @@
 const _ = require('lodash')
 
 const data = []
+let tweetID = 1
 
 function add (name, content) {
-  data.push({ name: name, content: content })
+  data.push({ name: name, content: content, id: tweetID })
+  tweetID++
 }
 
 function list () {
